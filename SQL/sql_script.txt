@@ -1,0 +1,16 @@
+CREATE DATABASE mvc-test;
+CREATE TABLE user_data (
+    REF_ID int  NOT NULL AUTO_INCREMENT,
+    FNAME varchar(60),
+    LNAME varchar(60),
+    EMAIL varchar(100),
+    COMMENT varchar(255),
+    TIMESTAMP varchar(40),
+    EXPIRED varchar(40),
+    STATE varchar(20)
+    PRIMARY KEY (REF_ID)
+);
+
+
+-- in case reset auto increment;
+-- ALTER TABLE user_data AUTO_INCREMENT = 1;

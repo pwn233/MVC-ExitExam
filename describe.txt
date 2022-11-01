@@ -1,0 +1,28 @@
+63050206 อนุวัตร ตรีเจริญรัตน์
+เลือกทำข้อ 2 ครับ
+
+over all project : มี gui 2 part เป็น view และ table โดยมี controller เป็น control และมี process การทำงานเป็น model ครับ (ใน code จะมี comment ที่ผมเขียนอธิบายไว้บ้างแต่เป็นภาษาอังกฤษนะครับ เขียนไทยแล้วเคย push ขึ้น github แล้วไม่รองรับ)
+
+view part (view): จะเป็นส่วนรับ user input และมีการ เรียก method จาก control มา check ว่า black หรือไม่ โดยถ้า blank
+จะ respond user เป็น pop up ให้ user ทราบ(ผ่านการใช้ JOptionpane Libraries ของ Java) แต่ถ้าไม่ blank จะส่งข้อมูลที่ได้รับมาไปยัง control, 
+ใน view ยังมี button ในการเรียกใช้ gui อีกอันนึงคือ table ในกรณีที่ user อยากจะเห็นรายละเอียดข้อมูลที่ถูกบันทึกไว้ทั้งหมด
+
+table part (view): จะเป็นตารางที่มีการ initialize column name ตาม database และมีการเรียก control class เพื่อเรียก method
+ตั้งแต่ method query ข้อมูลมาดู, method update STATE เป็น ESCALATE หรือ CLOSE และยังมี refresh button เพื่อ refresh
+หลังการ action ข้างต้น และมี filter ในการเลือกเห็นเฉพาะ STATE ทั้งหมด หรือ STATE ที่เป็น CLOSE
+
+control part(control): เป็นส่วนกลางระหว่าง view และ model(โดยการเรียก model มาใช้ต้องเป็น private เพื่อป้องกันการถูกเรียกใช้จากข้างนอก) 
+โดยข้อมูล input ที่ได้รับมาจาก view จะถูก เรียก setData ฝั่ง model มาใช้ในการ set ค่าทั้งหมด, ยังเป็นส่วนกลางของ table และ model 
+ในการเรียก query ข้อมูลตอน update STATE จากทั้ง view และ table เมื่อ control action การทำงานเสร็จจะ return status กลับไปว่า 
+complete หรือ fail ให้ view ไป respond 
+
+model part(model): เป็นส่วนการเก็บ parameter ที่จะต้องเป็น private เพราะเลี่ยงการถูกเรียกใช้โดยตรง เน้นการเรียกผ่าน get/set เอา
+และ method ส่วนมากจะ เป็น public เพื่อให้ control ได้เรียกใช้ ตั้งแต่ method การเรียกเวลาปัจจุบัน และ เวลาหมดอายุในอนาคต 7 วัน
+ทั้ง 2 จะทำงานโดย LocalDate Libraries ของ Java และแปลงเป็น String โดย DateFormatter เพื่อเตรียมพร้อมเก็บลง Database
+โดย method ที่เกี่ยวข้องกับ database จะมีตัว insertDatabase ที่บันทึก data ทุกอย่างลง database ตอน user input, มี update 2 อย่าง
+ที่ update state เป็น ESCALATE และ CLOSE โดยอ้างอิงจาก ref id ที่ user ใส่ (ในทุกการ update จะมีการตรวจเช็ค 2 level โดย
+level แรกจะตรวจเช็คการมีอยู่ของ REF_ID ว่ามีหรือไม่ อีก level จะตรวจเช็คว่า STATE = CLOSE แล้วจะไม่เกิดการอัปเดต และ STATE 
+= ESCALATE แล้วจะไม่มีการเปลี่ยนแปลง) มี method ของการเรียกข้อมูลมาเก็บเป็น row ไว้ใช้ในการดึงข้อมูลเข้า Table ที่ใช้แสดงผลบน GUI 
+โดยมี 2 แบบ คือ แบบที่เป็น All Data และ Close State only Data
+
+DatabaseConnect part(model) : เขียนแยกออกมาเพื่อเรียกใช้การ connect (เพื่อทดสอบว่าสำเร็จหรือไม่) และ query execute (เพื่อทดสอบว่าสำเร็จหรือไม่)
